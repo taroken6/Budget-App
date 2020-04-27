@@ -1,0 +1,80 @@
+<resources>
+    <string name="app_name">Budget Calculator App</string>
+    <string name="time_interval">Time Interval</string>
+    <string name="time_interval0">Day</string>
+    <string name="time_interval1">Week</string>
+    <string name="time_interval2">Month</string>
+    <string name="time_interval3">Year</string>
+    <string name="date">Date</string>
+    <string name="earnings_text">Earnings</string>
+    <string name="earnings_colon">Earnings:</string>
+    <string name="edit_earnings">Edit Earnings:</string>
+    <string name="dollar_sign">$$$$</string>
+    <string name="budget_text">My Budget</string>
+    <string name="budget_colon">Budget:</string>
+    <string name="bills">Liability</string>
+    <string name="liability_colon">Liability:</string>
+    <string name="personal">Personal</string>
+    <string name="personal_colon">Personal:</string>
+    <string name="savings">Savings</string>
+    <string name="savings_colon">Savings:</string>
+    <string name="spendings_text">Spendings</string>
+    <string name="spendings_description">Spendings Description:</string>
+    <string name="spendings_colon">Spendings:</string>
+    <string name="description">Description:</string>
+    <string name="add">Add</string>
+    <string name="notes">Notes</string>
+    <string name="type_text">Type</string>
+    <string name="total_colon">Total:</string>
+    <string name="type_colon">Type:</string>
+    <string name="amt">Amt.</string>
+    <string name="category">Category</string>
+    <string name="earnings_description">Earnings Description:</string>
+    <string name="ok">Okay</string>
+
+    <string-array name="earnings_type">
+        <item>Income</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="budget_type">
+        <item>%</item>
+        <item>Total</item>
+    </string-array>
+
+    <string-array name="spending_type">
+        <item>Liability</item>
+        <item>Personal</item>
+        <item>Savings</item>
+    </string-array>
+
+    <string-array name="spending_liability_type">
+        <item>Bills &amp; Utilities</item>
+        <item>Auto &amp; Transport</item>
+        <item>Education</item>
+        <item>Loans</item>
+        <item>Insurance</item>
+        <item>Taxes</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="spending_personal_type">
+        <item>Entertainment</item>
+        <item>Shopping</item>
+        <item>Personal Care</item>
+        <item>Health &amp; Fitness</item>
+        <item>Food &amp; Dining</item>
+        <item>Gifts &amp; Donations</item>
+        <item>Travel</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="spending_savings_type">
+        <item>Savings</item>
+        <item>Travel</item>
+        <item>Stocks</item>
+        <item>Retirement</item>
+        <item>Other</item>
+    </string-array>
+
+</resources>

@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background"
+    tools:context=".BudgetActivity">
+
+    <EditText
+        android:id="@+id/personalEditText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:ems="10"
+        android:hint=" Input here..."
+        android:inputType="numberDecimal"
+        android:background="@android:color/white"
+        app:layout_constraintEnd_toEndOf="@+id/liabilityEditText"
+        app:layout_constraintStart_toStartOf="@+id/liabilityEditText"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        app:layout_constraintBottom_toBottomOf="@+id/personalSpinnerLayout"
+        />
+
+    <EditText
+        android:id="@+id/savingsEditText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/white"
+        android:ems="10"
+        android:hint=" Input here..."
+        android:inputType="numberDecimal"
+        app:layout_constraintBottom_toBottomOf="@+id/savingsSpinnerLayout"
+        app:layout_constraintEnd_toEndOf="@+id/personalEditText"
+        app:layout_constraintStart_toStartOf="@+id/personalEditText"
+        app:layout_constraintTop_toTopOf="@+id/guideline3" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.4" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.6" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.8" />
+
+    <TextView
+        android:id="@+id/liabilityText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:autoSizeTextType="uniform"
+        android:maxLines="1"
+        android:text="@string/bills"
+        android:textAlignment="textEnd"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/liabilityEditText"
+        app:layout_constraintEnd_toStartOf="@+id/liabilityEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline1"
+        app:layout_constraintVertical_bias="0.545" />
+
+    <TextView
+        android:id="@+id/personalTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:autoSizeTextType="uniform"
+        android:maxLines="1"
+        android:text="@string/personal"
+        android:textAlignment="textEnd"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/personalEditText"
+        app:layout_constraintEnd_toStartOf="@+id/personalEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/personalEditText" />
+
+    <TextView
+        android:id="@+id/savingsTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:autoSizeTextType="uniform"
+        android:maxLines="1"
+        android:text="@string/savings"
+        android:textAlignment="textEnd"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/savingsEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline3" />
+
+    <EditText
+        android:id="@+id/liabilityEditText"
+        android:layout_width="100dp"
+        android:layout_height="0dp"
+        android:background="@android:color/white"
+        android:ems="10"
+        android:hint=" Input here..."
+        android:inputType="numberDecimal"
+        app:layout_constraintBottom_toBottomOf="@+id/liabilitySpinnerLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.311"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline1" />
+
+    <RelativeLayout
+        android:id="@+id/liabilitySpinnerLayout"
+        android:layout_width="100dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="69dp"
+        android:layout_marginEnd="16dp"
+        android:background="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/liabilityEditText"
+        app:layout_constraintTop_toTopOf="@+id/guideline1">
+        <Spinner
+            android:id="@+id/liabilitySpinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/personalSpinnerLayout"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:background="@android:color/white"
+        app:layout_constraintEnd_toEndOf="@+id/liabilitySpinnerLayout"
+        app:layout_constraintStart_toStartOf="@+id/liabilitySpinnerLayout"
+        app:layout_constraintTop_toTopOf="@+id/personalEditText">
+        <Spinner
+            android:id="@+id/personalSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/savingsSpinnerLayout"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:background="@android:color/white"
+        app:layout_constraintEnd_toEndOf="@+id/personalSpinnerLayout"
+        app:layout_constraintStart_toStartOf="@+id/personalSpinnerLayout"
+        app:layout_constraintTop_toTopOf="@+id/savingsEditText">
+        <Spinner
+            android:id="@+id/savingsSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/liabilityTotalText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="@string/total_colon"
+        android:textSize="18sp"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/liabilityTotal"
+        app:layout_constraintEnd_toStartOf="@+id/liabilityTotal"
+        app:layout_constraintTop_toTopOf="@+id/liabilityTotal" />
+
+    <TextView
+        android:id="@+id/personalTotalText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="@string/total_colon"
+        android:textSize="18sp"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/personalTotal"
+        app:layout_constraintEnd_toStartOf="@+id/personalTotal"
+        app:layout_constraintTop_toTopOf="@+id/personalTotal" />
+
+    <TextView
+        android:id="@+id/savingsTotalText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="@string/total_colon"
+        android:textSize="18sp"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/savingsTotal"
+        app:layout_constraintEnd_toStartOf="@+id/savingsTotal"
+        app:layout_constraintTop_toTopOf="@+id/savingsTotal" />
+
+    <TextView
+        android:id="@+id/liabilityTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textSize="24sp"
+        android:textColor="@android:color/white"
+        app:layout_constraintStart_toStartOf="@+id/liabilityEditText"
+        app:layout_constraintTop_toBottomOf="@+id/liabilityEditText" />
+
+    <TextView
+        android:id="@+id/personalTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textSize="24sp"
+        android:textColor="@android:color/white"
+        app:layout_constraintStart_toStartOf="@+id/liabilityTotal"
+        app:layout_constraintTop_toBottomOf="@+id/personalEditText" />
+
+    <TextView
+        android:id="@+id/savingsTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textSize="24sp"
+        android:textColor="@android:color/white"
+        app:layout_constraintStart_toStartOf="@+id/personalTotal"
+        app:layout_constraintTop_toBottomOf="@+id/savingsEditText" />
+
+    <TextView
+        android:id="@+id/dateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/date"
+        android:textSize="24sp"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/timeIntervalTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/time_interval"
+        android:textSize="24sp"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="@+id/dateTextView"
+        app:layout_constraintStart_toStartOf="@+id/dateTextView"
+        app:layout_constraintTop_toBottomOf="@+id/dateTextView" />
+
+    <ImageButton
+        android:id="@+id/timeIntervalLeftBtn"
+        android:layout_width="36dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="88dp"
+        android:background="#0000"
+        android:src="@drawable/left_arrow"
+        app:layout_constraintBottom_toBottomOf="@+id/timeIntervalTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/timeIntervalTextView"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/left_arrow"
+        tools:ignore="MissingConstraints" />
+
+    <ImageButton
+        android:id="@+id/timeIntervalRightBtn"
+        android:layout_width="36dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="88dp"
+        android:background="#0000"
+        android:scaleX="-1"
+        android:src="@drawable/left_arrow"
+        app:layout_constraintBottom_toBottomOf="@+id/timeIntervalTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/timeIntervalTextView"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/left_arrow"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/moneyTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/dollar_sign"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timeIntervalTextView" />
+
+    <TextView
+        android:id="@+id/typeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="@string/type_colon"
+        android:textSize="18dp"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/liabilitySpinnerLayout"
+        app:layout_constraintEnd_toStartOf="@+id/liabilitySpinnerLayout"
+        app:layout_constraintTop_toTopOf="@+id/liabilitySpinnerLayout" />
+
+    <TextView
+        android:id="@+id/typeText2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="@string/type_colon"
+        android:textSize="18dp"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/personalSpinnerLayout"
+        app:layout_constraintEnd_toStartOf="@+id/personalSpinnerLayout"
+        app:layout_constraintTop_toTopOf="@+id/personalSpinnerLayout" />
+
+    <TextView
+        android:id="@+id/typeText3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="@string/type_colon"
+        android:textSize="18dp"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/savingsSpinnerLayout"
+        app:layout_constraintEnd_toStartOf="@+id/savingsSpinnerLayout"
+        app:layout_constraintTop_toTopOf="@+id/savingsSpinnerLayout" />
+
+    <TextView
+        android:id="@+id/earningsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:text="@string/earnings_colon"
+        android:textSize="18sp"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/moneyTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/moneyTextView"
+        app:layout_constraintVertical_bias="0.48" />
+</androidx.constraintlayout.widget.ConstraintLayout>
