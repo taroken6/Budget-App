@@ -1,4 +1,4 @@
-package com.example.budgetappattempt2;
+package com.example.budgetapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -154,21 +154,17 @@ public class SpendingsActivity extends AppCompatActivity {
         Calendar calendar = new GregorianCalendar(selectedYear, selectedMonth, selectedDay);
         int[] timeIntervals = {1, 7, calendar.getActualMaximum(Calendar.DAY_OF_MONTH),
                 calendar.getActualMaximum(Calendar.DAY_OF_YEAR)};
-        Log.d(TAG, "Date received = " + calendar.getTime());
 
         Calendar startingDate = (Calendar) calendar.clone(); // Start with selected date
         if(timeIntervalIndex == 1){
             calendar.add(Calendar.DAY_OF_MONTH, -(calendar.get(Calendar.DAY_OF_WEEK) - 1));
             startingDate = calendar;
-            Log.d("Earnings Activity", "Start of week = " + startingDate.getTime());
         } else if(timeIntervalIndex == 2){
             calendar.add(Calendar.DAY_OF_MONTH, -(calendar.get(Calendar.DAY_OF_MONTH) - 1));
             startingDate = calendar;
-            Log.d("Earnings Activity", "Start of month = " + startingDate.getTime());
         } else if(timeIntervalIndex == 3) {
             calendar.add(Calendar.DAY_OF_YEAR, -(calendar.get(Calendar.DAY_OF_YEAR) - 1));
             startingDate = calendar;
-            Log.d("Earnings Activity", "Start of year = " + startingDate.getTime());
         }
 
         for(int i = 0; i < timeIntervals[timeIntervalIndex]; i++){
@@ -218,7 +214,6 @@ public class SpendingsActivity extends AppCompatActivity {
                             getNewInput(spending);
                             selectedKey = key;
                             selectedInput = spending;
-                            Log.d(TAG, "Selected key: " + selectedKey);
                         } else if (id == R.id.delete) {
                             deleteInput(key, spending);
                         }
@@ -322,7 +317,6 @@ public class SpendingsActivity extends AppCompatActivity {
             FileWriter fw = new FileWriter(mapFilePath);
             fw.write(fileContent);
             fw.flush();
-            Log.d(TAG, "Successfully serialized file!");
         } catch(IOException e){
             Log.e(TAG, "IOException at serializeMap: " + e);
         }
@@ -339,14 +333,12 @@ public class SpendingsActivity extends AppCompatActivity {
                 Type type = new TypeToken<HashMap<String, ArrayList<SpendingsClass>>>(){}.getType();
                 HashMap<String, ArrayList<SpendingsClass>> mapOut =
                         new Gson().fromJson(fileContent, type);
-                Log.d(TAG, "Returning existing map... " + mapOut.toString());
                 return mapOut;
             } catch(IOException e){
                 Log.e(TAG, "IOException at deserialize " + e);
                 return new HashMap<String, ArrayList<SpendingsClass>>();
             }
         } else {
-            Log.d(TAG, "Returning empty map");
             return new HashMap<String, ArrayList<SpendingsClass>>();
         }
     }
@@ -376,7 +368,6 @@ public class SpendingsActivity extends AppCompatActivity {
      * @return Double of String input
      */
     private double convertMoneyToDouble(String input){
-        Log.i(TAG, "String given is \"" + input + "\"");
         String money = input.replaceAll("[^\\d.]", "");
         double returnValue;
         try{
@@ -384,7 +375,6 @@ public class SpendingsActivity extends AppCompatActivity {
         } catch(NumberFormatException e){
             returnValue = 0;
         }
-        Log.i(TAG, "Value being returned is " + returnValue);
         return returnValue;
     }
 
@@ -431,21 +421,18 @@ public class SpendingsActivity extends AppCompatActivity {
                     R.array.spending_liability_type, android.R.layout.simple_spinner_item);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             categorySpinner.setAdapter(adapter);
-            Log.d(TAG, "Selected type = " + liabilityStringResource);
         } else if(selectedType.equals(personalStringResource)){
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                     R.array.spending_personal_type, android.R.layout.simple_spinner_item);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             categorySpinner.setAdapter(adapter);
-            Log.d(TAG, "Selected type = " + personalStringResource);
         } else if (selectedType.equals(savingsStringResource)) {
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                     R.array.spending_savings_type, android.R.layout.simple_spinner_item);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            categorySpinner.setAdapter(adapter);
             Log.d(TAG, "Selected type = " + savingsStringResource);
         } else {
-            Log.d(TAG, "Error at 'getCategorySpinner");
+            Log.e(TAG, "Error at 'getCategorySpinner");
         }
     }
     //endregion
@@ -481,7 +468,6 @@ public class SpendingsActivity extends AppCompatActivity {
      * @return Key for map use
      */
     private String getDateKey(String dateString){
-        Log.i(TAG, "getDateKey received date \"" + dateString + "\"");
         String[] date;
         date = dateString.split("/");
         for(int i = 0; i < date.length; i++){
@@ -489,7 +475,6 @@ public class SpendingsActivity extends AppCompatActivity {
                 date[i] = "0" + date[i];
             }
         }
-        Log.i(TAG, "Returning date key \'" + TextUtils.join("", date) + "\'");
         return TextUtils.join("", date);
     }
 
@@ -500,13 +485,11 @@ public class SpendingsActivity extends AppCompatActivity {
     public int[] getDateArray(){
         int[] calendarOutput = getIntent().getIntArrayExtra("date");
         if (calendarOutput == null){
-            Log.d(TAG, "Intent returned null dateArray");
             Calendar calendar = Calendar.getInstance();
             int[] dateToday = {calendar.get(Calendar.MONTH), calendar.get(
                     Calendar.DAY_OF_MONTH), calendar.get(Calendar.YEAR)};
             calendarOutput = dateToday;
         }
-        Log.d(TAG, "Returning calendar size of " + calendarOutput.length);
         return calendarOutput;
     }
     //endregion
@@ -519,7 +502,6 @@ public class SpendingsActivity extends AppCompatActivity {
     private void displayTimeInterval(){
         String timeIntervalName = "time_interval" + timeIntervalIndex;
         int timeIntervalID = getTimeIntervalID(timeIntervalName);
-        System.out.println("String resource: " + getString(timeIntervalID));
         timeIntervalTextView = findViewById(R.id.timeIntervalTextView);
         timeIntervalTextView.setText(getString(timeIntervalID));
     }
@@ -563,8 +545,6 @@ public class SpendingsActivity extends AppCompatActivity {
         if (requestCode == 4){ // Code for edit spendings Activity
             if(resultCode == Activity.RESULT_OK){
                 newInput = (SpendingsClass) intent.getParcelableExtra("edit_spendings");
-                Log.d(TAG, "on result 4: " + selectedKey +  " " + selectedInput.getDate());
-                Log.d(TAG, "Selected at position: " + map.get(selectedKey).indexOf(selectedInput));
                 if(selectedInput.getDate().equals(newInput.getDate())){ // Date left the same
                     int selectedInputPosition = map.get(selectedKey).indexOf(selectedInput);
                     map.get(selectedKey).set(selectedInputPosition, newInput);

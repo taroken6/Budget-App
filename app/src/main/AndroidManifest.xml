@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.budgetappattempt2">
+    package="com.example.budgetapp">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -12,13 +12,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EditSpendingsActivity"></activity>
-        <activity android:name=".EditEarningsActivity" />
-        <activity android:name=".SpendingsActivity" />
-        <activity android:name=".BudgetActivity" />
-        <activity android:name=".EarningsActivity" />
-        <activity android:name=".CalendarActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name="com.example.budgetapp.EditSpendingsActivity"></activity>
+        <activity android:name="com.example.budgetapp.EditEarningsActivity" />
+        <activity android:name="com.example.budgetapp.SpendingsActivity" />
+        <activity android:name="com.example.budgetapp.BudgetActivity" />
+        <activity android:name="com.example.budgetapp.EarningsActivity" />
+        <activity android:name="com.example.budgetapp.CalendarActivity" />
+        <activity android:name="com.example.budgetapp.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

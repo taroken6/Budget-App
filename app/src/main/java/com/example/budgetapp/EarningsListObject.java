@@ -1,10 +1,10 @@
-package com.example.budgetappattempt2;
+package com.example.budgetapp;
 
-public class SpendingsListObject {
+public class EarningsListObject {
     private String type;
-    private double amount;
+    private double[] amount;
 
-    public SpendingsListObject(String type, double amount) {
+    public EarningsListObject(String type, double[] amount){
         this.type = type;
         this.amount = amount;
     }
@@ -17,11 +17,11 @@ public class SpendingsListObject {
         this.type = type;
     }
 
-    public double getAmount() {
+    public double[] getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(double[] amount) {
         this.amount = amount;
     }
 }

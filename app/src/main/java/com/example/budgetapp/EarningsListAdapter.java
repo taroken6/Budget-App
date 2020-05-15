@@ -1,4 +1,4 @@
-package com.example.budgetappattempt2;
+package com.example.budgetapp;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,17 +7,19 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
+
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
 
-public class BudgetListAdapter extends BaseExpandableListAdapter {
+public class EarningsListAdapter extends BaseExpandableListAdapter {
     private final DecimalFormat DECI_FORMAT = new DecimalFormat("0.00");
     Context context;
     List<String> header;
-    Map<String, List<BudgetListObject>> map; // Header is key.
+    Map<String, List<EarningsListObject>> map; // Header is key.
 
-    public BudgetListAdapter(Context context, List<String> header, Map<String, List<BudgetListObject>> map) {
+    public EarningsListAdapter(Context context, List<String> header, Map<String,
+            List<EarningsListObject>> map){
         this.context = context;
         this.header = header;
         this.map = map;
@@ -25,7 +27,7 @@ public class BudgetListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getGroupCount() {
-        return 1;
+        return 1; // Only one string for this table
     }
 
     @Override
@@ -60,10 +62,11 @@ public class BudgetListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+
         String title = (String) getGroup(groupPosition);
         if(convertView == null){
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.budget_table_header, null);
+            convertView = inflater.inflate(R.layout.earnings_table_header, null);
         }
         TextView titleTextView = (TextView) convertView.findViewById(R.id.textParent);
         titleTextView.setText(title);
@@ -74,7 +77,7 @@ public class BudgetListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
-        BudgetListObject child = (BudgetListObject) getChild(groupPosition, childPosition);
+        EarningsListObject child = (EarningsListObject) getChild(groupPosition, childPosition);
         if(convertView == null){
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.table_values, null);
@@ -82,7 +85,7 @@ public class BudgetListAdapter extends BaseExpandableListAdapter {
         TextView typeTextView = (TextView) convertView.findViewById(R.id.typeTextView);
         typeTextView.setText(child.getType());
         TextView amountTextView = (TextView) convertView.findViewById(R.id.amountTextView);
-        amountTextView.setText("$" + DECI_FORMAT.format(child.getAmount()));
+        amountTextView.setText("$" + DECI_FORMAT.format(child.getAmount()[0]));
 
         return convertView;
     }
@@ -91,4 +94,6 @@ public class BudgetListAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return false;
     }
+
+
 }

@@ -1,4 +1,4 @@
-package com.example.budgetappattempt2;
+package com.example.budgetapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -195,7 +195,6 @@ public class BudgetActivity extends AppCompatActivity {
                 budgetLiability[timeIntervalIndex].setType(selected);
                 displayTotal(liabilityEditText, liabilityTotalTextView, budgetLiability);
                 serializeBudgetArray(budgetLiability, budgetLiabilityPath);
-                Log.d(TAG, "Liability Type selected = " + selected);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -208,7 +207,6 @@ public class BudgetActivity extends AppCompatActivity {
                 String selected = parent.getItemAtPosition(position).toString();
                 budgetPersonal[timeIntervalIndex].setType(selected);
                 displayTotal(personalEditText, personalTotalTextView, budgetPersonal);
-                Log.d(TAG, "Personal Type selected = " + selected);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -221,7 +219,6 @@ public class BudgetActivity extends AppCompatActivity {
                 String selected = parent.getItemAtPosition(position).toString();
                 budgetSavings[timeIntervalIndex].setType(selected);
                 displayTotal(savingsEditText, savingsTotalTextView, budgetSavings);
-                Log.d(TAG, "Savings Type selected = " + selected);
             }
 
             @Override
@@ -235,7 +232,6 @@ public class BudgetActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 timeIntervalArrowClick(true);
-                Log.i("Earnings Activity", "Right Button clicked!");
                 setupUI();
             }
         });
@@ -243,7 +239,6 @@ public class BudgetActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 timeIntervalArrowClick(false);
-                Log.i("Earnings Activity", "Right Button clicked!");
                 setupUI();
             }
         });
@@ -274,7 +269,6 @@ public class BudgetActivity extends AppCompatActivity {
         for(int i = 0; i < earnings.length; i++){
             debugString += String.valueOf(earnings[i]) + " ";
         }
-        Log.d(TAG, "Earnings total received " + debugString);
         //endregion
 
         //region Setup spinner type
@@ -296,8 +290,6 @@ public class BudgetActivity extends AppCompatActivity {
         String inputType = budget.getType();
         Double earningsTotal = earnings[timeIntervalIndex];
         textBox.setText(inputString);
-
-        Log.d(TAG, "Display Total: inputType = " + inputType);
 
         if(inputType == null){
             textTotal.setText("Type == Null");
@@ -326,30 +318,24 @@ public class BudgetActivity extends AppCompatActivity {
         budgetSavingsPath = getFilesDir() + SAVINGS_FILE_NAME;
         if (new File(budgetLiabilityPath).exists()) {
             budgetLiability = deserializeBudgetArray(budgetLiabilityPath);
-            Log.d(TAG, "Liability Budget file exists!");
         } else {
             for (int i = 0; i < budgetLiability.length; i++) {
                 budgetLiability[i] = new BudgetClass(0, "%");
             }
-            Log.d(TAG, "Liability Budget file missing... Returning new Budget Array");
         }
         if (new File(budgetPersonalPath).exists()) {
             budgetPersonal = deserializeBudgetArray(budgetPersonalPath);
-            Log.d(TAG, "Personal Budget file exists!");
         } else {
             for (int i = 0; i < budgetLiability.length; i++) {
                 budgetPersonal[i] = new BudgetClass(0, "%");
             }
-            Log.d(TAG, "Personal Budget file missing... Returning new Budget Array");
         }
         if (new File(budgetSavingsPath).exists()) {
             budgetSavings = deserializeBudgetArray(budgetSavingsPath);
-            Log.d(TAG, "Liability Budget file exists!");
         } else {
             for (int i = 0; i < budgetLiability.length; i++) {
                 budgetSavings[i] = new BudgetClass(0, "%");
             }
-            Log.d(TAG, "Savings Budget file missing... Returning new Budget Array");
         }
     }
     //endregion
@@ -392,13 +378,11 @@ public class BudgetActivity extends AppCompatActivity {
     public int[] getDate(){
         int[] calendarOutput = getIntent().getIntArrayExtra("date");
         if (calendarOutput == null){
-            Log.d(TAG, "Intent returned null dateArray");
             Calendar calendar = Calendar.getInstance();
             int[] dateToday = {calendar.get(Calendar.MONTH), calendar.get(
                     Calendar.DAY_OF_MONTH), calendar.get(Calendar.YEAR)};
             calendarOutput = dateToday;
         }
-        Log.d(TAG, "Returning calendar size of " + calendarOutput.length);
         return calendarOutput;
     }
     //endregion
@@ -418,13 +402,11 @@ public class BudgetActivity extends AppCompatActivity {
     private BudgetClass[] deserializeBudgetArray(String filePath){
         try{
             String fileContent = readFile(filePath, StandardCharsets.US_ASCII);
-            Log.i(TAG, "fileContent: " + fileContent);
             Type type = new TypeToken<BudgetClass[]>(){}.getType();
             BudgetClass[] budgetArray = new Gson().fromJson(fileContent, type);
-            Log.i(TAG, "Deserialized");
             return budgetArray;
         } catch (IOException e){
-            Log.e(TAG, "IOException at deserialize: " + e);
+            Log.e(TAG, "IOException at deserializeBudgetArray method: " + e);
             return null;
         }
     }
@@ -457,7 +439,6 @@ public class BudgetActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, "Budget Activity onDestroy");
         serializeBudgetArray(budgetLiability, budgetLiabilityPath);
     }
 }

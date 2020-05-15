@@ -1,6 +1,7 @@
-package com.example.budgetappattempt2;
+package com.example.budgetapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -45,7 +46,7 @@ public class EarningsActivity extends AppCompatActivity {
     private final DecimalFormat DECI_FORMAT = new DecimalFormat("0.00");
     private final String TAG = "Earnings Activity"; // Debug purposes
     private String earningsFilePath;
-    private final String EARNINGS_FILE_NAME = "/earningsMap3";
+    private final String EARNINGS_FILE_NAME = "/earningsMap";
     private String moneyType;
     private EditText moneyInput;
     private EditText moneyDescription;
@@ -257,7 +258,6 @@ public class EarningsActivity extends AppCompatActivity {
                             getNewInput(input);
                             selectedKey = key;
                             selectedInput = input;
-                            Log.d(TAG, "Selected key: " + selectedKey);
                         } else if (id == R.id.delete) {
                             deleteInput(key, input);
                         }
@@ -309,7 +309,6 @@ public class EarningsActivity extends AppCompatActivity {
         MoneyInput moneyInput = new MoneyInput(money, moneyType, moneyDescription, date);
 
         if(earningsMap != null){
-            Log.i("Earnings Activity", "Earnings Map found! Inputting new input...");
             if (earningsMap.containsKey(key)) {
                 earningsMap.get(key).add(moneyInput);
             } else {
@@ -318,7 +317,6 @@ public class EarningsActivity extends AppCompatActivity {
             }
             serialize();
         } else {
-            Log.i("Earnings Activity", "Earnings map not found! Creating and inputting...");
             earningsMap = new HashMap();
             earningsMap.put(key, new ArrayList());
             earningsMap.get(key).add(moneyInput);
@@ -376,7 +374,6 @@ public class EarningsActivity extends AppCompatActivity {
     }
 
     private String getDateKey(String dateString){
-        Log.i("Earnings Activity", "getDateKey received date \"" + dateString + "\"");
         String[] date;
         date = dateString.split("/");
         for(int i = 0; i < date.length; i++){
@@ -384,7 +381,6 @@ public class EarningsActivity extends AppCompatActivity {
                 date[i] = "0" + date[i];
             }
         }
-        Log.i("Earnings Activity", "Returning date key \'" + TextUtils.join("", date) + "\'");
         return TextUtils.join("", date);
     }
     //endregion
@@ -404,10 +400,8 @@ public class EarningsActivity extends AppCompatActivity {
     private HashMap<String, ArrayList<MoneyInput>> deserializeMap(){
         try{
             String fileContent = readFile(earningsFilePath, StandardCharsets.US_ASCII);
-            Log.i("Earnings Activity", "fileContent: " + fileContent);
             Type type = new TypeToken<HashMap<String, ArrayList<MoneyInput>>>(){}.getType();
             HashMap<String, ArrayList<MoneyInput>> map = new Gson().fromJson(fileContent, type);
-            Log.i("Earnings Activity", "Deserialized into " + map.toString());
             return map;
         } catch (IOException e){
             e.printStackTrace();
@@ -473,8 +467,6 @@ public class EarningsActivity extends AppCompatActivity {
         if (requestCode == EDIT_EARNINGS_REQUEST_CODE){ // Code for edit earnings Activity
             if(resultCode == Activity.RESULT_OK){
                 newInput = (MoneyInput) intent.getParcelableExtra("edit_earnings");
-                Log.d(TAG, "on result 3: " + selectedKey +  " " + selectedInput.getDate());
-                Log.d(TAG, "Selected at position: " + earningsMap.get(selectedKey).indexOf(selectedInput));
                 if(selectedInput.getDate().equals(newInput.getDate())){ // Date left the same
                     int selectedInputPosition = earningsMap.get(selectedKey).indexOf(selectedInput);
                     earningsMap.get(selectedKey).set(selectedInputPosition, newInput);

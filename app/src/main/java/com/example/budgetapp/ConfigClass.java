@@ -1,9 +1,5 @@
-package com.example.budgetappattempt2;
+package com.example.budgetapp;
 import android.content.Context;
-import android.content.res.Resources;
-import android.os.Bundle;
-
-import java.util.Properties;
 
 
 public class ConfigClass {

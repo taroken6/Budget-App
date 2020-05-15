@@ -1,4 +1,4 @@
-package com.example.budgetappattempt2;
+package com.example.budgetapp;
 
 import android.os.Parcel;
 import android.os.Parcelable;

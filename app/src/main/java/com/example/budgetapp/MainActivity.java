@@ -1,4 +1,4 @@
-package com.example.budgetappattempt2;
+package com.example.budgetapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -49,13 +49,13 @@ public class MainActivity extends AppCompatActivity {
     private Toast toast;
     private final String TAG = "Main Activity";
     private final DecimalFormat DECI_FORMAT = new DecimalFormat("0.00");
-    private int[] selectedDateArray;
+    private int[] dateArray;
     private ProgressBar progressBar;
     private TextView progressBarText;
     private final int CALENDAR_REQUEST_CODE = 1;
 
     private String earningsFilePath;
-    private final String EARNINGS_FILE_NAME = "/earningsMap3";
+    private final String EARNINGS_FILE_NAME = "/earningsMap";
     private TextView earningsTotalTextView;
     private double[] earningsIncome = {0};
     private double[] earningsOther = {0};
@@ -95,11 +95,10 @@ public class MainActivity extends AppCompatActivity {
         config = new ConfigClass();
         prop = getConfig();
         if (prop.isEmpty()) {
-            System.err.println("Properties file not found!!!");
+            Log.e(TAG, "Properties file not found!!!");
         } else {
-            config.setTimeInterval(Integer.parseInt(prop.getProperty("timeInterval"))); //TODO Error here. Seems that there's no properties???
+            config.setTimeInterval(Integer.parseInt(prop.getProperty("timeInterval")));
             config.setUser(prop.getProperty("user"));
-            System.out.println("All config values loaded...");
             config.printAll();
         }
         //==========================================================================================
@@ -107,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
         //region General setup
         earningsFilePath = getFilesDir() + EARNINGS_FILE_NAME;
-        selectedDateArray = getDate();
+        dateArray = getDate();
         earningsTotalTextView = findViewById(R.id.earningsTotalText);
         budgetTotalTextView = (TextView) findViewById(R.id.budgetTotalText);
         spendingsTotalTextView = (TextView) findViewById(R.id.spendingsTotalText);
@@ -117,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         TextView dateTextView = findViewById(R.id.dateTextView);
         progressBar = findViewById(R.id.progressBar);
 
-        setupUI(selectedDateArray);
+        setupUI(dateArray);
         //endregion
 
         // region Button Click
@@ -125,14 +124,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 timeIntervalArrowClick(true);
-                setupUI(selectedDateArray);
+                setupUI(dateArray);
             }
         });
         timeIntervalRightBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 timeIntervalArrowClick(false);
-                setupUI(selectedDateArray);
+                setupUI(dateArray);
             }
         });
         dateTextView.setOnClickListener(new View.OnClickListener() {
@@ -172,6 +171,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateProgressBar(){
         double percentOfBudgetSpent = spendingsTotal / budgetTotal * 100;
+        if(Double.isNaN(percentOfBudgetSpent) || Double.isInfinite(percentOfBudgetSpent))
+            percentOfBudgetSpent = 0;
         progressBarText.setText(DECI_FORMAT.format(percentOfBudgetSpent) + "%");
         int value = (int) percentOfBudgetSpent;
         progressBar.setProgress(value);
@@ -222,7 +223,6 @@ public class MainActivity extends AppCompatActivity {
      * @return user-selected date as String
      */
     private String getDateToString(int[] selectedDateArray) {
-        int timeInterval = config.getTimeInterval();
         int month = selectedDateArray[0] + 1;
         int day = selectedDateArray[1];
         int year = selectedDateArray[2];
@@ -406,23 +406,18 @@ public class MainActivity extends AppCompatActivity {
             Calendar calendar = new GregorianCalendar(selectedYear, selectedMonth, selectedDay);
             int[] timeIntervals = {1, 7, calendar.getActualMaximum(Calendar.DAY_OF_MONTH),
                     calendar.getActualMaximum(Calendar.DAY_OF_YEAR)};
-            Log.d("Earnings Activity", "Date received = " + calendar.getTime());
-            Log.d("Earnings Activity", "current days in timeInterval = " + timeIntervals[timeInterval]);
 
             Calendar startingDate = (Calendar) calendar.clone(); // Start with selected date
             Log.d(TAG, "Date copied = " + startingDate.getTime());
             if (timeInterval == 1) {
                 calendar.add(Calendar.DAY_OF_MONTH, -(calendar.get(Calendar.DAY_OF_WEEK) - 1));
                 startingDate = calendar;
-                Log.d(TAG, "Start of week = " + startingDate.getTime());
             } else if (timeInterval == 2) {
                 calendar.add(Calendar.DAY_OF_MONTH, -(calendar.get(Calendar.DAY_OF_MONTH) - 1));
                 startingDate = calendar;
-                Log.d(TAG, "Start of month = " + startingDate.getTime());
             } else if (timeInterval == 3) {
                 calendar.add(Calendar.DAY_OF_YEAR, -(calendar.get(Calendar.DAY_OF_YEAR) - 1));
                 startingDate = calendar;
-                Log.d(TAG, "Start of year = " + startingDate.getTime());
             }
 
             HashMap<String, ArrayList<MoneyInput>> earningsMap = deserializeEarningsMap(earningsFilePath);
@@ -457,11 +452,12 @@ public class MainActivity extends AppCompatActivity {
     private HashMap<String, ArrayList<MoneyInput>> deserializeEarningsMap(String filePath) {
         try {
             String fileContent = readFile(filePath, StandardCharsets.US_ASCII);
-            Log.i(TAG, "fileContent: " + fileContent);
+            if(fileContent == null){
+                Log.i(TAG, fileContent);
+            }
             Type type = new TypeToken<HashMap<String, ArrayList<MoneyInput>>>() {
             }.getType();
             HashMap<String, ArrayList<MoneyInput>> map = new Gson().fromJson(fileContent, type);
-            Log.i(TAG, "Deserialized into " + map.toString());
             return map;
         } catch (IOException e) {
             e.printStackTrace();
@@ -478,8 +474,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void startBudgetActivity(View view) {
         Intent intent = new Intent(MainActivity.this, BudgetActivity.class);
-        intent.putExtra("date", getDateToString(selectedDateArray));
-        intent.putExtra("earnings", earningsByIntervals(selectedDateArray));
+        intent.putExtra("date", getDateToString(dateArray));
+        intent.putExtra("earnings", earningsByIntervals(dateArray));
         startActivity(intent);
     }
 
@@ -502,7 +498,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private double calculateBudgetTotal(BudgetClass[] budget, String earningsTotalString) {
         if (budget == null) { //First check if object is null, Need to access Budget Class first
-            return -1;
+            return 0;
         }
 
         double earningsTotal = Double.valueOf(earningsTotalString);
@@ -637,23 +633,17 @@ public class MainActivity extends AppCompatActivity {
             Calendar calendar = new GregorianCalendar(selectedYear, selectedMonth, selectedDay);
             int[] timeIntervals = {1, 7, calendar.getActualMaximum(Calendar.DAY_OF_MONTH),
                     calendar.getActualMaximum(Calendar.DAY_OF_YEAR)};
-            Log.d(TAG, "Date received = " + calendar.getTime());
-            Log.d(TAG, "current days in timeInterval = " + timeIntervals[timeInterval]);
 
             Calendar startingDate = (Calendar) calendar.clone(); // Start with selected date
-            Log.d(TAG, "Date copied = " + startingDate.getTime());
             if (timeInterval == 1) {
                 calendar.add(Calendar.DAY_OF_MONTH, -(calendar.get(Calendar.DAY_OF_WEEK) - 1));
                 startingDate = calendar;
-                Log.d(TAG, "Start of week = " + startingDate.getTime());
             } else if (timeInterval == 2) {
                 calendar.add(Calendar.DAY_OF_MONTH, -(calendar.get(Calendar.DAY_OF_MONTH) - 1));
                 startingDate = calendar;
-                Log.d(TAG, "Start of month = " + startingDate.getTime());
             } else if (timeInterval == 3) {
                 calendar.add(Calendar.DAY_OF_YEAR, -(calendar.get(Calendar.DAY_OF_YEAR) - 1));
                 startingDate = calendar;
-                Log.d(TAG, "Start of year = " + startingDate.getTime());
             }
 
             HashMap<String, ArrayList<SpendingsClass>> spendingsMap = deserializeSpendingsMap(
@@ -695,7 +685,7 @@ public class MainActivity extends AppCompatActivity {
             spendingsLiabilityTotal = 0;
             spendingsPersonalTotal = 0;
             spendingsSavingsTotal = 0;
-            Log.e(TAG,"Spendings file doesn't exist");
+            Log.i(TAG,"Spendings file doesn't exist");
         }
     }
 
@@ -708,11 +698,9 @@ public class MainActivity extends AppCompatActivity {
     private HashMap<String, ArrayList<SpendingsClass>> deserializeSpendingsMap(String filePath) {
         try {
             String fileContent = readFile(filePath, StandardCharsets.US_ASCII);
-            Log.i(TAG, "fileContent: " + fileContent);
             Type type = new TypeToken<HashMap<String, ArrayList<SpendingsClass>>>() {
             }.getType();
             HashMap<String, ArrayList<SpendingsClass>> map = new Gson().fromJson(fileContent, type);
-            Log.i(TAG, "Deserialized into " + map.toString());
             return map;
         } catch (IOException e) {
             e.printStackTrace();
@@ -736,7 +724,6 @@ public class MainActivity extends AppCompatActivity {
             configFile = new File(getFilesDir() + "/config.properties");
             InputStream assetsInputStream = getAssets().open("config.properties");
             Properties newProp = new Properties();
-            Log.d(TAG, "Locating config file at " + configFile);
 
             /**
              * If configFile was created or is empty, copy default properties to file
@@ -770,15 +757,13 @@ public class MainActivity extends AppCompatActivity {
         prop.setProperty("timeInterval", Integer.toString(config.getTimeInterval()));
         try {
             FileOutputStream fos = new FileOutputStream(configFile);
-            System.out.println("Test @ saveConfig: prop.timeInterval = " + prop.getProperty("timeInterval"));
             prop.store(fos, "Properties for Budget App");
             fos.close();
         } catch (FileNotFoundException e) {
-            System.err.println("Config file not found at: OnDestroy");
+            Log.e(TAG, "Config file not found at: OnDestroy");
         } catch (IOException e) {
-            System.err.println("IOException @ onDestroy: " + e);
+            Log.e(TAG, "IOException @ onDestroy: " + e);
         }
-        System.out.println("Config file saved!");
     }
     //endregion
 
@@ -787,8 +772,8 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, intent);
         if (requestCode == CALENDAR_REQUEST_CODE) { // Code for Calendar
             if (resultCode == Activity.RESULT_OK) {
-                selectedDateArray = intent.getIntArrayExtra("date");
-                setupUI(selectedDateArray);
+                dateArray = intent.getIntArrayExtra("date");
+                setupUI(dateArray);
             }
         }
     }
@@ -796,7 +781,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        setupUI(selectedDateArray);
+        setupUI(dateArray);
     }
 
     @Override
