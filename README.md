@@ -1,5 +1,5 @@
 # Budget-App
-Budget Calculator Android App
+Budget Calculator Android App<br />
 Demo: https://youtu.be/34hjhiP_aN0
 
 The app was coded in Java using Android Studio IDE.
