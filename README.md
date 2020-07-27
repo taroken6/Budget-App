@@ -1,6 +1,6 @@
 # Budget App
-Start date: Feb 27, 2019
-Demo: https://youtu.be/34hjhiP_aN0
+Start date: Feb 27, 2019  
+Demo: https://youtu.be/34hjhiP_aN0  
 An android app based off my personal budget planner.  
 Calculates earnings, the budget based on earnings, and spendings all based on user input.  
 Useful for those who rarely spend money and wish to manage their budget manually.
